@@ -1,0 +1,134 @@
+.screen {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+.screen.host {
+  max-width: 40rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+input {
+  font-size: 1.1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #ccc;
+}
+
+.button {
+  display: inline-block;
+  font-size: 1.1rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid #333;
+  background: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.button.primary {
+  background: #1f4e14;
+  border-color: #1f4e14;
+  color: #fff;
+}
+
+.link-box {
+  font-family: monospace;
+  font-size: 0.95rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: #f2f2f2;
+  word-break: break-all;
+}
+
+.qr-box {
+  display: flex;
+  justify-content: center;
+}
+
+.signal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.signal-button {
+  font-size: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 2px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+
+.signal-button.active.signal-clarify {
+  background: #fff3cd;
+  border-color: #d4a017;
+}
+
+.signal-button.active.signal-second {
+  background: #d4f4dd;
+  border-color: #1f4e14;
+}
+
+.signal-button.active.signal-disagree {
+  background: #fbdada;
+  border-color: #b3261e;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 1rem;
+  text-align: left;
+}
+
+.column {
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: #f7f7f7;
+  min-height: 6rem;
+}
+
+.column h2 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.column ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.column-clarify {
+  background: #fff8e1;
+}
+
+.column-second {
+  background: #e8f7ec;
+}
+
+.column-disagree {
+  background: #fbeaea;
+}
+
+.muted {
+  color: #666;
+  font-size: 0.9rem;
+}

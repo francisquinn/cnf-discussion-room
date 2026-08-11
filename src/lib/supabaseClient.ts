@@ -1,0 +1,15 @@
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(
+    'Missing VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY. Copy .env.example to ' +
+      '.env.local and fill in CNF\'s existing Supabase project URL and anon key.',
+  )
+}
+
+// Realtime only (Presence + Broadcast) — no tables, no schema, no auth.
+// Safe to point this at CNF's existing Supabase project.
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
