@@ -5,6 +5,7 @@ const OPTIONS: Array<{ key: Exclude<Status, null>; label: string }> = [
   { key: 'clarify', label: 'Clarify' },
   { key: 'second', label: 'Second' },
   { key: 'disagree', label: 'Disagree' },
+  { key: 'newpoint', label: 'New point' },
 ]
 
 export function JoinRoom({ roomId }: { roomId: string }) {

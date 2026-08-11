@@ -101,6 +101,11 @@ input {
   border-color: #b3261e;
 }
 
+.signal-button.active.signal-newpoint {
+  background: #dce8fb;
+  border-color: #1a56c4;
+}
+
 .columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
@@ -139,6 +144,10 @@ input {
 
 .column-disagree {
   background: #fbeaea;
+}
+
+.column-newpoint {
+  background: #eaf1fc;
 }
 
 .muted {

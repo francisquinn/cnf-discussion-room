@@ -4,12 +4,19 @@ const COLUMNS: Array<{ key: Exclude<Status, null>; label: string }> = [
   { key: 'clarify', label: 'Clarifying' },
   { key: 'second', label: 'Seconding' },
   { key: 'disagree', label: 'Disagreeing' },
+  { key: 'newpoint', label: 'New point' },
 ]
 
 export function HostDashboard({ roomId }: { roomId: string }) {
   const { participants, clearBoard, ended, endDiscussion } = usePresence({ roomId })
 
-  const byStatus: Record<string, string[]> = { clarify: [], second: [], disagree: [], none: [] }
+  const byStatus: Record<string, string[]> = {
+    clarify: [],
+    second: [],
+    disagree: [],
+    newpoint: [],
+    none: [],
+  }
   Object.values(participants).forEach((participant) => {
     byStatus[participant.status ?? 'none'].push(participant.name)
   })

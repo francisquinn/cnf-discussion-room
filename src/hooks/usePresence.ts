@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { RealtimeChannel } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabaseClient'
 
-export type Status = 'clarify' | 'second' | 'disagree' | null
+export type Status = 'clarify' | 'second' | 'disagree' | 'newpoint' | null
 
 export interface Participant {
   name: string
