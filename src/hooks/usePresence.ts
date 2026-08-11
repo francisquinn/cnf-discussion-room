@@ -22,11 +22,14 @@ interface UsePresenceResult {
   status: Status
   setStatus: (next: Exclude<Status, null>) => void
   clearBoard: () => void
+  ended: boolean
+  endDiscussion: () => void
 }
 
 export function usePresence({ roomId, name }: UsePresenceOptions): UsePresenceResult {
   const [participants, setParticipants] = useState<Record<string, Participant>>({})
   const [status, setStatusState] = useState<Status>(null)
+  const [ended, setEnded] = useState(false)
   const channelRef = useRef<RealtimeChannel | null>(null)
   const clientIdRef = useRef(crypto.randomUUID())
 
@@ -49,6 +52,9 @@ export function usePresence({ roomId, name }: UsePresenceOptions): UsePresenceRe
       })
       .on('broadcast', { event: 'clear' }, () => {
         setStatusState(null)
+      })
+      .on('broadcast', { event: 'end' }, () => {
+        setEnded(true)
       })
       .subscribe((subStatus) => {
         if (subStatus === 'SUBSCRIBED' && name) {
@@ -80,5 +86,13 @@ export function usePresence({ roomId, name }: UsePresenceOptions): UsePresenceRe
     channelRef.current?.send({ type: 'broadcast', event: 'clear', payload: {} })
   }
 
-  return { participants, status, setStatus, clearBoard }
+  // Facilitator-only: close out the room. Nothing is persisted, so this is
+  // just a signal everyone reacts to locally — there's no server-side
+  // "closed" state to clean up.
+  const endDiscussion = () => {
+    setEnded(true)
+    channelRef.current?.send({ type: 'broadcast', event: 'end', payload: {} })
+  }
+
+  return { participants, status, setStatus, clearBoard, ended, endDiscussion }
 }

@@ -10,7 +10,7 @@ const OPTIONS: Array<{ key: Exclude<Status, null>; label: string }> = [
 export function JoinRoom({ roomId }: { roomId: string }) {
   const [name, setName] = useState('')
   const [joined, setJoined] = useState(false)
-  const { status, setStatus } = usePresence({ roomId, name: joined ? name : undefined })
+  const { status, setStatus, ended } = usePresence({ roomId, name: joined ? name : undefined })
 
   if (!joined) {
     const handleSubmit = (event: FormEvent) => {
@@ -32,6 +32,15 @@ export function JoinRoom({ roomId }: { roomId: string }) {
             Join
           </button>
         </form>
+      </main>
+    )
+  }
+
+  if (ended) {
+    return (
+      <main className="screen">
+        <h1>Discussion ended</h1>
+        <p>Thanks for taking part, {name}.</p>
       </main>
     )
   }
