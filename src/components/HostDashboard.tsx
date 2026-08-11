@@ -8,17 +8,19 @@ const COLUMNS: Array<{ key: Exclude<Status, null>; label: string }> = [
 ]
 
 export function HostDashboard({ roomId }: { roomId: string }) {
-  const { participants, clearBoard, ended, endDiscussion } = usePresence({ roomId })
+  const { participants, clearBoard, dismissParticipant, ended, endDiscussion } = usePresence({
+    roomId,
+  })
 
-  const byStatus: Record<string, string[]> = {
+  const byStatus: Record<string, Array<{ key: string; name: string }>> = {
     clarify: [],
     second: [],
     disagree: [],
     newpoint: [],
     none: [],
   }
-  Object.values(participants).forEach((participant) => {
-    byStatus[participant.status ?? 'none'].push(participant.name)
+  Object.entries(participants).forEach(([key, participant]) => {
+    byStatus[participant.status ?? 'none'].push({ key, name: participant.name })
   })
 
   return (
@@ -51,15 +53,30 @@ export function HostDashboard({ roomId }: { roomId: string }) {
           <div key={column.key} className={`column column-${column.key}`}>
             <h2>{column.label}</h2>
             <ul>
-              {byStatus[column.key].map((personName) => (
-                <li key={personName}>{personName}</li>
+              {byStatus[column.key].map((person) => (
+                <li key={person.key}>
+                  {person.name}
+                  {!ended && (
+                    <button
+                      type="button"
+                      className="dismiss"
+                      aria-label={`Dismiss ${person.name}'s signal`}
+                      title="Mark resolved / clear their signal"
+                      onClick={() => dismissParticipant(person.key)}
+                    >
+                      ×
+                    </button>
+                  )}
+                </li>
               ))}
             </ul>
           </div>
         ))}
       </div>
 
-      <p className="muted">Not signaling: {byStatus.none.join(', ') || '—'}</p>
+      <p className="muted">
+        Not signaling: {byStatus.none.map((person) => person.name).join(', ') || '—'}
+      </p>
     </main>
   )
 }

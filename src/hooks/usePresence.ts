@@ -22,6 +22,7 @@ interface UsePresenceResult {
   status: Status
   setStatus: (next: Exclude<Status, null>) => void
   clearBoard: () => void
+  dismissParticipant: (key: string) => void
   ended: boolean
   endDiscussion: () => void
 }
@@ -52,6 +53,9 @@ export function usePresence({ roomId, name }: UsePresenceOptions): UsePresenceRe
       })
       .on('broadcast', { event: 'clear' }, () => {
         setStatusState(null)
+      })
+      .on('broadcast', { event: 'dismiss' }, ({ payload }) => {
+        if (payload?.key === clientIdRef.current) setStatusState(null)
       })
       .on('broadcast', { event: 'end' }, () => {
         setEnded(true)
@@ -86,6 +90,14 @@ export function usePresence({ roomId, name }: UsePresenceOptions): UsePresenceRe
     channelRef.current?.send({ type: 'broadcast', event: 'clear', payload: {} })
   }
 
+  // Facilitator-only: reset one person's signal, e.g. their clarifying
+  // question got answered out loud but they forgot to tap it off. Targeted
+  // by presence key so nobody else's status is touched. Self-correcting if
+  // it's ever wrong — the person just taps their button again.
+  const dismissParticipant = (key: string) => {
+    channelRef.current?.send({ type: 'broadcast', event: 'dismiss', payload: { key } })
+  }
+
   // Facilitator-only: close out the room. Nothing is persisted, so this is
   // just a signal everyone reacts to locally — there's no server-side
   // "closed" state to clean up.
@@ -94,5 +106,5 @@ export function usePresence({ roomId, name }: UsePresenceOptions): UsePresenceRe
     channelRef.current?.send({ type: 'broadcast', event: 'end', payload: {} })
   }
 
-  return { participants, status, setStatus, clearBoard, ended, endDiscussion }
+  return { participants, status, setStatus, clearBoard, dismissParticipant, ended, endDiscussion }
 }
